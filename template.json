@@ -1,0 +1,83 @@
+{
+ "$schema": "https://schema.management.azure.com/schemas/2019-08-01/subscriptionDeploymentTemplate.json#",
+ "contentVersion": "1.0.0.0",
+ "parameters": {
+  "mspOfferName": {
+   "type": "string",
+   "metadata": {
+    "description": "Specify a unique name for your offer"
+   },
+   "defaultValue": "Connect Digital Security"
+  },
+  "mspOfferDescription": {
+   "type": "string",
+   "metadata": {
+    "description": "Name of the Managed Service Provider offering"
+   },
+   "defaultValue": "ConnectDS are a specialist Managed Security Service Provider (MSSP) with a focus on Penetration testing and cyber security services for organisations across the UK. Our MSSP services are operated from our Surrey and London office location and established to deliver logical and effective resilience towards cyber attacks on organisations across the UK."
+  },
+  "managedByTenantId": {
+   "type": "string",
+   "metadata": {
+    "description": "Specify the tenant id of the Managed Service Provider"
+   },
+   "defaultValue": "d8feea07-cbac-4d4e-942e-d71dffa6f239"
+  },
+  "authorizations": {
+   "type": "array",
+   "metadata": {
+    "description": "Specify an array of objects, containing tuples of Azure Active Directory principalId, a Azure roleDefinitionId, and an optional principalIdDisplayName. The roleDefinition specified is granted to the principalId in the provider's Active Directory and the principalIdDisplayName is visible to customers."
+   },
+   "defaultValue": [
+    {
+     "principalId": "ef007061-2c0c-48e6-b08b-5e08b324f70c",
+     "roleDefinitionId": "fb1c8493-542b-48eb-b624-b4c8fea62acd",
+     "principalIdDisplayName": "Security Team"
+    },
+    {
+     "principalId": "ef007061-2c0c-48e6-b08b-5e08b324f70c",
+     "roleDefinitionId": "ab8e14d6-4a74-4a29-9ba8-549422addade",
+     "principalIdDisplayName": "Security Team"
+    }
+   ]
+  }
+ },
+ "variables": {
+  "mspRegistrationName": "[guid(parameters('mspOfferName'))]",
+  "mspAssignmentName": "[guid(parameters('mspOfferName'))]"
+ },
+ "resources": [
+  {
+   "type": "Microsoft.ManagedServices/registrationDefinitions",
+   "apiVersion": "2020-02-01-preview",
+   "name": "[variables('mspRegistrationName')]",
+   "properties": {
+    "registrationDefinitionName": "[parameters('mspOfferName')]",
+    "description": "[parameters('mspOfferDescription')]",
+    "managedByTenantId": "[parameters('managedByTenantId')]",
+    "authorizations": "[parameters('authorizations')]"
+   }
+  },
+  {
+   "type": "Microsoft.ManagedServices/registrationAssignments",
+   "apiVersion": "2020-02-01-preview",
+   "name": "[variables('mspAssignmentName')]",
+   "dependsOn": [
+    "[resourceId('Microsoft.ManagedServices/registrationDefinitions/', variables('mspRegistrationName'))]"
+   ],
+   "properties": {
+    "registrationDefinitionId": "[resourceId('Microsoft.ManagedServices/registrationDefinitions/', variables('mspRegistrationName'))]"
+   }
+  }
+ ],
+ "outputs": {
+  "mspOfferName": {
+   "type": "string",
+   "value": "[concat('Managed by', ' ', parameters('mspOfferName'))]"
+  },
+  "authorizations": {
+   "type": "array",
+   "value": "[parameters('authorizations')]"
+  }
+ }
+}
