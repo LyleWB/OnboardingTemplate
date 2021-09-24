@@ -14,7 +14,7 @@
    "metadata": {
     "description": "Name of the Managed Service Provider offering"
    },
-   "defaultValue": "ConnectDS are a specialist Managed Security Service Provider (MSSP) with a focus on Penetration testing and cyber security services for organisations across the UK. Our MSSP services are operated from our Surrey and London office location and established to deliver logical and effective resilience towards cyber attacks on organisations across the UK."
+   "defaultValue": "ConnectDS are a specialist Managed Security Service Provider (MSSP) with a focus on Penetration testing and cyber security services for organisations across the UK. Our MSSP services are operated from our Surrey and London office location and established to deliver logical and effective resilience towards cyber attacks on organisations"
   },
   "managedByTenantId": {
    "type": "string",
@@ -29,6 +29,11 @@
     "description": "Specify an array of objects, containing tuples of Azure Active Directory principalId, a Azure roleDefinitionId, and an optional principalIdDisplayName. The roleDefinition specified is granted to the principalId in the provider's Active Directory and the principalIdDisplayName is visible to customers."
    },
    "defaultValue": [
+    {
+     "principalId": "ef007061-2c0c-48e6-b08b-5e08b324f70c",
+     "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7",
+     "principalIdDisplayName": "Security Team"
+    },
     {
      "principalId": "ef007061-2c0c-48e6-b08b-5e08b324f70c",
      "roleDefinitionId": "fb1c8493-542b-48eb-b624-b4c8fea62acd",
